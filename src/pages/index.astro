@@ -1,0 +1,128 @@
+---
+import { getCollection } from 'astro:content';
+import PostCard from '../components/PostCard.astro';
+import Base from '../layouts/Base.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
+
+const notes = (await getCollection('notes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 4);
+---
+
+<Base title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <div class="container home">
+
+    <section class="intro">
+      <h1>Beto Moreno</h1>
+      <p>
+        Product manager at <a href="https://www.deel.com" target="_blank" rel="noopener">Deel</a>.
+        I think and write about product, strategy, and building things that matter.
+      </p>
+    </section>
+
+    {posts.length > 0 && (
+      <section class="section">
+        <div class="section-header">
+          <h2>Writing</h2>
+          <a href="/blog" class="see-all">See all →</a>
+        </div>
+        {posts.map(post => (
+          <PostCard
+            href={`/blog/${post.id}/`}
+            title={post.data.title}
+            date={post.data.date}
+            description={post.data.description}
+            tags={post.data.tags}
+          />
+        ))}
+      </section>
+    )}
+
+    {notes.length > 0 && (
+      <section class="section">
+        <div class="section-header">
+          <h2>Notes</h2>
+          <a href="/notes" class="see-all">See all →</a>
+        </div>
+        {notes.map(note => (
+          <PostCard
+            href={`/notes/${note.id}/`}
+            title={note.data.title}
+            date={note.data.date}
+            description={note.data.description}
+            tags={note.data.tags}
+          />
+        ))}
+      </section>
+    )}
+
+  </div>
+</Base>
+
+<style>
+  .home {
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+  }
+
+  .intro {
+    margin-bottom: 3.5rem;
+  }
+
+  .intro h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .intro p {
+    font-size: 1.0625rem;
+    color: var(--color-text-muted);
+    max-width: 36rem;
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  .intro a {
+    color: var(--color-text-muted);
+    text-underline-offset: 3px;
+  }
+
+  .intro a:hover {
+    color: var(--color-accent);
+  }
+
+  .section {
+    margin-bottom: 3rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+
+  .section-header h2 {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .see-all {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .see-all:hover {
+    color: var(--color-accent);
+  }
+</style>

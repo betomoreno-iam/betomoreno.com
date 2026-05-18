@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import PostCard from '../../components/PostCard.astro';
+import Base from '../../layouts/Base.astro';
+
+const notes = (await getCollection('notes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Base title="Notes" description="Short notes, links, and quick thoughts by Beto Moreno.">
+  <div class="container page">
+    <header class="page-header">
+      <h1>Notes</h1>
+      <p>Short-form thoughts, links, and observations.</p>
+    </header>
+
+    {notes.length > 0 ? (
+      <div>
+        {notes.map(note => (
+          <PostCard
+            href={`/notes/${note.id}/`}
+            title={note.data.title}
+            date={note.data.date}
+            description={note.data.description}
+            tags={note.data.tags}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="empty">Nothing here yet.</p>
+    )}
+  </div>
+</Base>
+
+<style>
+  .page {
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .page-header {
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .page-header p {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .empty {
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+  }
+</style>

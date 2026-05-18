@@ -1,0 +1,57 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer data-pagefind-ignore>
+  <div class="container--wide footer-inner">
+    <span class="copyright">© {year} Beto Moreno</span>
+    <nav aria-label="Footer navigation">
+      <a href="/about">About</a>
+      <a href="/resume">Resume</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+    <nav class="social" aria-label="Social links">
+      <a href="https://linkedin.com/in/betomoreno" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://twitter.com/betomoreno" target="_blank" rel="noopener noreferrer">X</a>
+      <a href="https://github.com/betomoreno-iam" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  footer {
+    margin-top: 4rem;
+    padding: 1.75rem 1.25rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+
+  .copyright {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  nav {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  nav a {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  nav a:hover {
+    color: var(--color-text);
+  }
+</style>

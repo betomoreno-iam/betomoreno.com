@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Search" description="Search all content on betomoreno.com">
+  <div class="container page">
+    <header class="page-header">
+      <h1>Search</h1>
+    </header>
+    <div id="search-wrapper">
+      <div id="search" />
+    </div>
+  </div>
+</Base>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<script src="/pagefind/pagefind-ui.js" is:inline></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (typeof window.PagefindUI !== 'undefined') {
+      new window.PagefindUI({
+        element: '#search',
+        showSubResults: true,
+        resetStyles: false,
+      });
+    } else {
+      const el = document.getElementById('search');
+      if (el) {
+        el.innerHTML = '<p class="search-unavailable">Search is available after running <code>npm run build</code>.</p>';
+      }
+    }
+  });
+</script>
+
+<style>
+  .page {
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .page-header {
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0;
+  }
+
+  :global(.search-unavailable) {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+  }
+
+  :global(.search-unavailable code) {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background-color: var(--color-bg-alt);
+    padding: 0.15em 0.375em;
+    border-radius: 3px;
+  }
+
+  /* Pagefind UI customization */
+  :global(.pagefind-ui__search-input) {
+    font-family: var(--font-sans) !important;
+    background-color: var(--color-bg-alt) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 6px !important;
+    color: var(--color-text) !important;
+  }
+
+  :global(.pagefind-ui__result-title) {
+    font-family: var(--font-sans) !important;
+    color: var(--color-accent) !important;
+  }
+
+  :global(.pagefind-ui__result-excerpt) {
+    font-family: var(--font-sans) !important;
+    color: var(--color-text-muted) !important;
+  }
+</style>

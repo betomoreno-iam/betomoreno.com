@@ -1,0 +1,114 @@
+---
+import FormattedDate from '../components/FormattedDate.astro';
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  date?: Date;
+  updatedDate?: Date;
+  tags?: string[];
+  backHref?: string;
+  backLabel?: string;
+}
+
+const {
+  title,
+  description,
+  date,
+  updatedDate,
+  tags = [],
+  backHref = '/blog',
+  backLabel = 'Writing',
+} = Astro.props;
+---
+
+<Base title={title} description={description}>
+  <article class="container post">
+    <header class="post-header">
+      <a href={backHref} class="back-link">← {backLabel}</a>
+      <h1>{title}</h1>
+      {description && <p class="lead">{description}</p>}
+      <div class="post-meta">
+        {date && <FormattedDate date={date} format="long" />}
+        {updatedDate && (
+          <span class="updated">Updated <FormattedDate date={updatedDate} /></span>
+        )}
+        {tags.length > 0 && (
+          <span class="tags">
+            {tags.map(tag => <span class="tag">{tag}</span>)}
+          </span>
+        )}
+      </div>
+      <hr />
+    </header>
+
+    <div class="prose" data-pagefind-body>
+      <slot />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .post {
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .post-header {
+    margin-bottom: 2rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color var(--transition);
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+
+  .lead {
+    font-size: 1.0625rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-sans);
+    margin-bottom: 1.5rem;
+  }
+
+  .updated {
+    font-style: italic;
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 0;
+  }
+</style>
